@@ -1,3 +1,132 @@
+
+
+
+
+
+# Docker Setup Guide
+
+This guide covers the Docker setup for the application, including development and production environments.
+
+## Development Usage
+
+### Start all services
+```bash
+make dev-up
+```
+
+### Stop services
+```bash
+make dev-down
+```
+
+### Build containers
+```bash
+make dev-build
+```
+
+### View logs
+```bash
+# Gateway logs
+make dev-logs SERVICE=gateway
+
+# Backend logs
+make dev-logs SERVICE=backend
+```
+
+### Open a shell inside a container
+```bash
+# Backend shell
+make backend-shell
+
+# Gateway shell
+make gateway-shell
+
+# MongoDB shell
+make mongo-shell
+```
+
+## Production Usage
+
+### Build production containers
+```bash
+make prod-build
+```
+
+### Start production services
+```bash
+make prod-up
+```
+
+### Stop production services
+```bash
+make prod-down
+```
+
+### View production logs
+```bash
+# Gateway logs
+make prod-logs SERVICE=gateway
+
+# Backend logs
+make prod-logs SERVICE=backend
+```
+
+## Backend Security in Docker
+
+The backend service is private within the Docker network for security:
+
+- **Backend**: Private inside Docker network (`expose: 3847`)
+- **Gateway**: Public (`5921`) and routes all API calls
+
+### Test access
+
+```bash
+# ✅ Allowed via Gateway
+curl http://localhost:5921/api/products
+
+# ❌ Direct backend access blocked
+curl http://localhost:3847/api/products
+```
+
+## Cleanup Commands
+
+### Remove dev containers
+```bash
+make clean
+```
+
+### Remove all containers, networks, volumes, and images
+```bash
+make clean-all
+```
+
+### Remove only Docker volumes
+```bash
+make clean-volumes
+```
+
+## Health Checks
+
+### Gateway health endpoint
+```bash
+curl http://localhost:5921/health
+```
+
+### Backend internal health (within Docker network)
+```bash
+docker-compose exec backend curl http://backend:3847/health
+```
+
+## Architecture Overview
+
+The application uses a microservices architecture with the following components:
+
+- **Gateway**: Acts as the public-facing API gateway (port 5921)
+- **Backend**: Private service handling business logic (internal port 3847)
+- **MongoDB**: Database service (accessible only within Docker network)
+
+All external requests must go through the Gateway, which routes them to the appropriate backend services. This architecture provides an additional layer of security by keeping backend services isolated from direct external access.
+
 # Hackathon Challenge
 
 Your challenge is to take this simple e-commerce backend and turn it into a fully containerized microservices setup using Docker and solid DevOps practices.
