@@ -21,9 +21,10 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "5921:5921"
-    environment:
-      - NODE_ENV=development
-      - BACKEND_URL=http://backend:3847
+    env_file:
+      - ../gateway/.env
+    depends_on:
+      - backend
     depends_on:
       - backend
     volumes:
