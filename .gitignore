@@ -1,1 +1,33 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+**/node_modules/
 
+# Environment variables
+*.env
+backend/.env
+gateway/.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.cache/
